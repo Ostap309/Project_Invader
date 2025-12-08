@@ -1,7 +1,7 @@
 import pygame as pg
 from config import *
 from main_screen import MainScreen
-from random import randint
+from utils import ImgLdr
 
 
 # Класс окна программы
@@ -11,6 +11,8 @@ class Window:
             (MAIN_WIDTH, MAIN_HEIGHT),
             pg.RESIZABLE
         )
+        ImgLdr.init_stat()
+
         self.main_sc = MainScreen()
         self.clock = pg.time.Clock()
 
@@ -42,5 +44,4 @@ class Window:
         self.clock.tick(60)
 
     def process_keyboard(self, key) -> None:
-        if key == pg.K_SPACE:
-            pass
+        self.main_sc.process_keyboard(key)

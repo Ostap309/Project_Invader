@@ -23,3 +23,6 @@ class MainScreen:
         self.main_sur.blit(self.game_sc.game_sur, (0, 0))
         self.main_sur.blit(self.btmbar_sc.btmbar_sur, (0, HEIGHT14))
         self.main_sur.blit(self.image_sc.image_sur, (WIDTH14, HEIGHT14))
+
+    def process_keyboard(self, key) -> None:
+        self.game_sc.process_keyboard(key)
