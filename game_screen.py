@@ -32,6 +32,7 @@ class GameScreen:
         self.y_inertial_motion = InertialMotion(100)
 
     def update(self):
+        # Создание динамического фона
         self.game_sur.fill((0, 0, 0))
         for background in self.backgrounds:
             self.game_sur.blit(background.image, (0, background.y))
@@ -42,11 +43,18 @@ class GameScreen:
         self.check_player_position()
         self.game_sur.blit(self.player.cur_sprite, (self.player.x, self.player.y))
 
-    def process_keyboard(self, key) -> None:
-        pass
+    def process_keyboard(self, event) -> None:
+        if event.type == pg.KEYDOWN and event.key == pg.K_x:
+            self.player.cur_anim = "braking"
+        elif event.type == pg.KEYUP and event.key == pg.K_x:
+            self.player.cur_anim = "move"
 
     def check_pressed(self):
         keys = pg.key.get_pressed()
+        if keys[pg.K_x]:
+            self.player.y_speed = self.y_inertial_motion.update_speed(self.player.y_speed, ACCELERATION, braking=True)
+            self.player.x_speed = self.x_inertial_motion.update_speed(self.player.x_speed, ACCELERATION, braking=True)
+            return
 
         if keys[pg.K_w] and not keys[pg.K_s]:
             self.player.y_speed = self.y_inertial_motion.update_speed(self.player.y_speed, -1 * ACCELERATION)

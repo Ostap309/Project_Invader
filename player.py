@@ -10,8 +10,12 @@ class Player:
         self.animations = {
             "move": SpriteAnimation([ImgLdr.dict[f"spaceship_move{i}"] for i in range(4)],
                                     120,
-                                    cyclic=True)
+                                    cyclic=True),
+            "braking": SpriteAnimation([ImgLdr.dict[f"spaceship_braking{i}"] for i in range(4)],
+                                       120,
+                                       cyclic=True)
         }
+        self.cur_anim: str = "move"
         self.x = 500
         self.y = 500
         self.size = self.cur_sprite.get_rect().size
@@ -23,8 +27,9 @@ class Player:
         self.speed = 1
 
     def update(self):
-        self.animations["move"].update()
-        self.cur_sprite = self.animations["move"].get_current_frame()
+        # print(self.cur_anim)
+        self.animations[self.cur_anim].update()
+        self.cur_sprite = self.animations[self.cur_anim].get_current_frame()
 
         self.x += self.x_speed
         self.y += self.y_speed
@@ -35,16 +40,30 @@ class InertialMotion:
         self.delay = delay_ms
         self.last_update = pg.time.get_ticks()
 
-    def update_speed(self, speed, growth):
+    def update_speed(self, speed, growth, braking=False):
         current_time = pg.time.get_ticks()
         if current_time - self.last_update > self.delay:
             self.last_update = current_time
-            new_speed = speed + growth
-            if new_speed < -1 * MAX_PLAYER_SPEED:
-                speed = -1 * MAX_PLAYER_SPEED
-            elif new_speed > MAX_PLAYER_SPEED:
-                speed = MAX_PLAYER_SPEED
+
+            # Положительный и отрицательный разгон
+            if not braking:
+                new_speed = speed + growth
+                if new_speed < -1 * MAX_PLAYER_SPEED:
+                    speed = -1 * MAX_PLAYER_SPEED
+                elif new_speed > MAX_PLAYER_SPEED:
+                    speed = MAX_PLAYER_SPEED
+                else:
+                    speed = new_speed
+            # Торможение
             else:
-                speed = new_speed
+                speed -= self.copysign(min(abs(speed), abs(growth)), speed)
 
         return speed
+
+    def copysign(self, x, y):
+        if y > 0:
+            return abs(x)
+        elif y < 0:
+            return -1 * abs(x)
+        else:
+            return 0

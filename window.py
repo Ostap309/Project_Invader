@@ -43,5 +43,5 @@ class Window:
 
         self.clock.tick(60)
 
-    def process_keyboard(self, key) -> None:
-        self.main_sc.process_keyboard(key)
+    def process_keyboard(self, event) -> None:
+        self.main_sc.process_keyboard(event)
