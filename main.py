@@ -26,8 +26,12 @@ while running:
         elif event.type == pg.VIDEORESIZE:
             # Обновляем размер окна при изменении
             window.resize(event)
-        elif event.type == pg.KEYDOWN or event.type == pg.KEYUP:
-            window.process_keyboard(event)
+        elif event.type in (pg.KEYDOWN, pg.KEYUP):
+            window.check_clicks(event)
+
+    # Отслеживание удержания клавиш
+    window.check_pressed(pg.key.get_pressed())
 
     # Обновление окна
     window.update()
+

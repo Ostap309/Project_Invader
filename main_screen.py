@@ -24,5 +24,8 @@ class MainScreen:
         self.main_sur.blit(self.btmbar_sc.btmbar_sur, (0, HEIGHT14))
         self.main_sur.blit(self.image_sc.image_sur, (WIDTH14, HEIGHT14))
 
-    def process_keyboard(self, event) -> None:
-        self.game_sc.process_keyboard(event)
+    def check_clicks(self, event: pg.event.Event) -> None:
+            self.game_sc.check_clicks(event)
+
+    def check_pressed(self, keys: pg.key.ScancodeWrapper) -> None:
+        self.game_sc.check_pressed(keys)

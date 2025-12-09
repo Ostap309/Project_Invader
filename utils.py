@@ -22,6 +22,13 @@ class ImgLdr:
             "spaceship_braking0": pg.image.load('assets/spaceship_braking_1.png').convert_alpha(),
             "spaceship_braking1": pg.image.load('assets/spaceship_braking_2.png').convert_alpha(),
             "spaceship_braking2": pg.image.load('assets/spaceship_braking_3.png').convert_alpha(),
-            "spaceship_braking3": pg.image.load('assets/spaceship_braking_4.png').convert_alpha()
+            "spaceship_braking3": pg.image.load('assets/spaceship_braking_4.png').convert_alpha(),
+
+            "frontcannon_fire0": pg.image.load('assets/frontcannon_fire1.png').convert_alpha(),
+            "frontcannon_fire1": pg.image.load('assets/frontcannon_fire2.png').convert_alpha(),
+            "frontcannon_fire2": pg.image.load('assets/frontcannon_fire3.png').convert_alpha(),
+            "frontcannon_fire3": pg.image.load('assets/frontcannon_fire4.png').convert_alpha(),
+
+            "bullet": pg.image.load('assets/bullet.png').convert_alpha()
 
         }

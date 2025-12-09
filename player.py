@@ -1,11 +1,12 @@
 import pygame as pg
+
 from utils import ImgLdr
 from sprite_animation import SpriteAnimation
 from config import *
 
 
 class Player:
-    def __init__(self):
+    def __init__(self) -> None:
         self.cur_sprite: pg.Surface = ImgLdr.dict["spaceship_move3"]
         self.animations = {
             "move": SpriteAnimation([ImgLdr.dict[f"spaceship_move{i}"] for i in range(4)],
@@ -24,23 +25,57 @@ class Player:
         self.x_speed = 0
         self.y_speed = 0
         self.health = 3
-        self.speed = 1
 
-    def update(self):
-        # print(self.cur_anim)
+        self.slot1 = FrontalCannon(self, FRONTALCANNON_RATE)
+
+    def update(self) -> None:
         self.animations[self.cur_anim].update()
         self.cur_sprite = self.animations[self.cur_anim].get_current_frame()
 
         self.x += self.x_speed
         self.y += self.y_speed
 
+        # Обновление слотов вооружения
+        self.slot1.update()
+
+
+class FrontalCannon:
+    def __init__(self, spaceship: Player, reload) -> None:
+        self.cur_sprite: pg.Surface = ImgLdr.dict[f"frontcannon_fire3"]
+        self.cur_anim: str = "fire"
+
+        self.reload = reload
+        self.last_update = pg.time.get_ticks()
+
+        self.animations = {
+            "fire": SpriteAnimation([ImgLdr.dict[f"frontcannon_fire{i}"] for i in range(4)],
+                                    30,
+                                    cyclic=False,
+                                    )
+        }
+
+        self.animations[self.cur_anim].stop()
+
+    def fire(self) -> bool:
+        current_time = pg.time.get_ticks()
+        if current_time - self.last_update > self.reload:
+            self.last_update = current_time
+            self.animations[self.cur_anim].play()
+            return True
+
+        return False
+
+    def update(self) -> None:
+        self.animations[self.cur_anim].update()
+        self.cur_sprite = self.animations[self.cur_anim].get_current_frame()
+
 
 class InertialMotion:
-    def __init__(self, delay_ms):
+    def __init__(self, delay_ms: int) -> None:
         self.delay = delay_ms
         self.last_update = pg.time.get_ticks()
 
-    def update_speed(self, speed, growth, braking=False):
+    def update_speed(self, speed: int, growth: int, braking=False) -> int:
         current_time = pg.time.get_ticks()
         if current_time - self.last_update > self.delay:
             self.last_update = current_time
@@ -60,7 +95,7 @@ class InertialMotion:
 
         return speed
 
-    def copysign(self, x, y):
+    def copysign(self, x: int, y: int) -> int:
         if y > 0:
             return abs(x)
         elif y < 0:

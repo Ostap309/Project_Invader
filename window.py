@@ -43,5 +43,8 @@ class Window:
 
         self.clock.tick(60)
 
-    def process_keyboard(self, event) -> None:
-        self.main_sc.process_keyboard(event)
+    def check_clicks(self, event: pg.event.Event) -> None:
+        self.main_sc.check_clicks(event)
+
+    def check_pressed(self, keys: pg.key.ScancodeWrapper):
+        self.main_sc.check_pressed(keys)

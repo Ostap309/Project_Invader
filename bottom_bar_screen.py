@@ -5,9 +5,8 @@ from utils import ImgLdr
 
 class BtmBarScreen:
 
-    def __init__(self):
-
+    def __init__(self) -> None:
         self.btmbar_sur = pg.Surface((WIDTH14, HEIGHT3))
 
-    def update(self):
+    def update(self) -> None:
         self.btmbar_sur.blit(ImgLdr.dict["btmbar"], (0, 0))
